@@ -1,0 +1,10 @@
+<resources>
+    <!-- Название приложения -->
+    <string name="app_name">AZStream</string>
+
+    <!-- Кнопки -->
+    <string name="button_start_stream">Начать стрим</string>
+    <string name="button_stop_stream">Завершить стрим</string>
+
+    <!-- Сообщения -->
+</resources>

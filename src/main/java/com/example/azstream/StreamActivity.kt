@@ -1,8 +1,10 @@
 package com.example.azstream
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,7 @@ class StreamActivity : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
     private lateinit var buttonMenu: ImageButton
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,6 +44,7 @@ class StreamActivity : AppCompatActivity() {
         buttonStartStream = findViewById(R.id.buttonStartStream)
         buttonEndStream = findViewById(R.id.buttonEndStream)
         val imageStream = findViewById<PhotoView>(R.id.ImageStream)
+        val textPreview = findViewById<TextView>(R.id.textPreview)
 
         streamManager = StreamManager(this, lifecycleScope)
 
@@ -49,29 +53,21 @@ class StreamActivity : AppCompatActivity() {
         }
 
         buttonStartStream.setOnClickListener {
-            buttonStartStream.isEnabled = false
-            buttonEndStream.isEnabled = true
             lifecycleScope.launch {
                 val check = streamManager.checkPreconditions()
                 when (check) {
                     1 -> {
+                        textPreview.isEnabled = false
+                        buttonStartStream.isEnabled = false
+                        buttonEndStream.isEnabled = true
                         streamManager.startPolling { bitmap ->
                             imageStream.setImageBitmap(bitmap)
                         }
                         Toast.makeText(this@StreamActivity, "Стрим запущен!", Toast.LENGTH_SHORT).show()
                     }
-                    -1 -> {
-                        returnButtonEnabled()
-                        Toast.makeText(this@StreamActivity, "Нет интернета", Toast.LENGTH_LONG).show()
-                    }
-                    -2 -> {
-                        returnButtonEnabled()
-                        Toast.makeText(this@StreamActivity, "Стрим уже запущен", Toast.LENGTH_SHORT).show()
-                    }
-                    -3 -> {
-                        returnButtonEnabled()
-                        Toast.makeText(this@StreamActivity, "Ошибка Яндекс.Диска", Toast.LENGTH_LONG).show()
-                    }
+                    -1 -> Toast.makeText(this@StreamActivity, "Нет интернета", Toast.LENGTH_LONG).show()
+                    -2 -> Toast.makeText(this@StreamActivity, "Стрим уже запущен", Toast.LENGTH_SHORT).show()
+                    -3 -> Toast.makeText(this@StreamActivity, "Ошибка Яндекс.Диска", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -81,8 +77,8 @@ class StreamActivity : AppCompatActivity() {
 
             buttonStartStream.isEnabled = true
             buttonEndStream.isEnabled = false
+            textPreview.isEnabled = true
 
-            imageStream.setImageResource(R.drawable.ic_launcher_foreground)
             Toast.makeText(this, "Стрим остановлен", Toast.LENGTH_SHORT).show()
         }
 

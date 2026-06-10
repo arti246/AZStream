@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.azstream.R
 import com.google.android.material.navigation.NavigationView
+import kotlin.system.exitProcess
 
 abstract class BaseActivity : AppCompatActivity() {
     protected lateinit var drawerLayout: DrawerLayout
@@ -58,6 +59,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 }
                 R.id.nav_about -> {
                     Toast.makeText(this, "О приложении\nВерсия 1.0", Toast.LENGTH_LONG).show()
+                }
+                R.id.nav_exit -> {
+                    finishAffinity()
+                    exitProcess(0)
                 }
             }
             true

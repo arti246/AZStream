@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:text="Настройки"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,16 +50,17 @@
                 android:id="@+id/textViewToken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
                 android:text="Токен от приложения Яндекс.Диск" />
 
             <EditText
                 android:id="@+id/editTextToken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:ems="10"
                 android:inputType="text"
-                android:background="@android:drawable/edit_text"
-                android:textColor="#000000" />
+                android:textColor="@color/text_primary" />
                 android:hint="QAToken" />
         </LinearLayout>
 

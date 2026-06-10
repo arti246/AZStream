@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import com.example.azstream.stream.StreamManager
@@ -57,7 +58,7 @@ class StreamActivity : AppCompatActivity() {
                 val check = streamManager.checkPreconditions()
                 when (check) {
                     1 -> {
-                        textPreview.isEnabled = false
+                        textPreview.isVisible = false
                         buttonStartStream.isEnabled = false
                         buttonEndStream.isEnabled = true
                         streamManager.startPolling { bitmap ->
@@ -77,7 +78,8 @@ class StreamActivity : AppCompatActivity() {
 
             buttonStartStream.isEnabled = true
             buttonEndStream.isEnabled = false
-            textPreview.isEnabled = true
+            textPreview.isVisible = true
+            imageStream.setImageBitmap(null)
 
             Toast.makeText(this, "Стрим остановлен", Toast.LENGTH_SHORT).show()
         }
@@ -87,6 +89,10 @@ class StreamActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_stream -> {
                     Toast.makeText(this, "Просмотр стрима", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawers()
+                }
+                R.id.nav_archive -> {
+                    Toast.makeText(this, "Просмотр архивов", Toast.LENGTH_SHORT).show()
                     drawerLayout.closeDrawers()
                 }
                 R.id.nav_settings -> {

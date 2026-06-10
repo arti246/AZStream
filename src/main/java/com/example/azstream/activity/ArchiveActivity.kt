@@ -1,11 +1,11 @@
 package com.example.azstream.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +14,7 @@ import com.example.azstream.R
 import com.example.azstream.model.ArchiveAdapter
 import com.example.azstream.model.ArchiveItem
 import com.example.azstream.stream.ArchivesManager
-import androidx.activity.OnBackPressedCallback
 import kotlinx.coroutines.launch
-import kotlin.text.isNullOrBlank
 
 class ArchiveActivity : BaseActivity() {
     private lateinit var recyclerView: RecyclerView

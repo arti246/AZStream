@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AZStream">
         <activity
-            android:name=".StreamActivity"
+            android:name=".activity.StreamActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ArchiveActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

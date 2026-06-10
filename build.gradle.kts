@@ -1,8 +1,9 @@
-import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.android")
+    // Compose plugin удалён
 }
 
 android {
@@ -12,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.azstream"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -28,19 +29,22 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     buildFeatures {
-        compose = true
+        // compose = true  ← УДАЛИТЬ или закомментировать
         buildConfig = true
     }
-    compileSdkMinor = 0
-    buildToolsVersion = "36.0.0"
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
 
 dependencies {
@@ -55,6 +59,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

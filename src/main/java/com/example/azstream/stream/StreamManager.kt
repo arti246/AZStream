@@ -2,7 +2,7 @@ package com.example.azstream.stream
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.example.azstream.StreamActivity
+import com.example.azstream.activity.StreamActivity
 import com.example.azstream.network.NetworkChecker
 import com.example.azstream.yandex.YandexDiskClient
 import kotlinx.coroutines.Dispatchers
@@ -42,10 +42,10 @@ class StreamManager(
                             onImageLoaded(bitmap)
                         }
                     }
-                    delay(10000.milliseconds)
+                    delay(2000.milliseconds)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    delay(10000.milliseconds)
+                    delay(2000.milliseconds)
                 }
             }
             isPolling = false

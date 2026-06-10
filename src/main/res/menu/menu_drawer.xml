@@ -8,6 +8,11 @@
             android:title="Просмотр стрима" />
 
         <item
+            android:id="@+id/nav_archive"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="Просмотр архивов" />
+
+        <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_preferences"
             android:title="Настройки" />

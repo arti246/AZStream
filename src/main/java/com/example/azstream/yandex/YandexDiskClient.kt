@@ -38,7 +38,7 @@ class YandexDiskClient {
     suspend fun getLastScreenshot(): Bitmap? = withContext(Dispatchers.IO) {
         try {
             val downloadUrlRequest = Request.Builder()
-                .url("https://cloud-api.yandex.net/v1/disk/resources/download?path=Stream/last.png")
+                .url("https://cloud-api.yandex.net/v1/disk/resources/download?path=Приложения/AZStream/Stream/last.jpg")
                 .addHeader("Authorization", "OAuth $QAtoken")
                 .build()
 

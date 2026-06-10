@@ -3,4 +3,5 @@
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#666666</color>
     <color name="background">#FFFFFF</color>
+    <color name="description_menu">#B3B3B3</color>
 </resources>

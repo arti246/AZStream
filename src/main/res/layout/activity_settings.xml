@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:text="Настройки"
+            android:text="@string/settings"
             android:textColor="@color/text_primary"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_primary"
-                android:text="Токен от приложения Яндекс.Диск" />
+                android:text="@string/token_from_yandex" />
 
             <EditText
                 android:id="@+id/editTextToken"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Сохранить изменения"
+            android:text="@string/save_changes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutSettings" />

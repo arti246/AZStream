@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Здесь будет трансляция!"
+            android:text="@string/there_will_be_broadcast_here"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"

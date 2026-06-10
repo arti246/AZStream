@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.azstream.R
+import com.example.azstream.managers.ArchivesManager
 import com.example.azstream.model.ArchiveAdapter
 import com.example.azstream.model.ArchiveItem
-import com.example.azstream.managers.ArchivesManager
 import kotlinx.coroutines.launch
 
 class ArchiveActivity : BaseActivity() {

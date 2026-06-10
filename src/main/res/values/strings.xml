@@ -5,6 +5,30 @@
     <!-- Кнопки -->
     <string name="button_start_stream">Начать стрим</string>
     <string name="button_stop_stream">Завершить стрим</string>
+    <string name="save_changes">Сохранить изменения</string>
+
+    <!-- TextView -->
+    <string name="archives_text_preview">Архив стримов</string>
+    <string name="there_will_be_broadcast_here">Здесь будет трансляция!</string>
+    <string name="settings">Настройки</string>
+    <string name="token_from_yandex">Токен от приложения Яндекс.Диск</string>
+    <string name="streaming_from_yandex_disk">Стриминг с Яндекс.Диска</string>
+    <string name="logo">Логотип</string>
 
     <!-- Сообщения -->
+    <string name="about_app">О приложении\nВерсия 1.0</string>
+    <string name="token_save">Токен сохранён в файл!</string>
+    <string name="token_not_save">Токен не может быть пустым</string>
+    <string name="stream_started">Стрим запущен!</string>
+    <string name="stream_stopped">Стрим остановлен</string>
+
+    <!-- Ошибки -->
+    <string name="error">Ошибка:</string>
+    <string name="error_get_link_to_video">Не удалось получить ссылку на видео</string>
+    <string name="error_no_internet_connection">Нет подключения к интернету</string>
+    <string name="error_stream_already_running">Стрим уже запущен</string>
+    <string name="error_yandex_disk">Ошибка Яндекс.Диска</string>
+
+    <!-- Пути -->Приложения/AZStream/Archives
+    <string name="path_Archives">Приложения/AZStream/Archives</string>
 </resources>

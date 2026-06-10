@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:id="@+id/main">
 
-        <!-- Кнопка меню (гамбургер) -->
+        <!-- Кнопка меню -->
         <ImageButton
             android:id="@+id/buttonMenu"
             android:layout_width="48dp"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="80dp"
-            android:text="Архив стримов"
+            android:text="@string/archives_text_preview"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"

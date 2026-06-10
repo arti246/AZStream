@@ -50,7 +50,7 @@ class StreamActivity : BaseActivity() {
                         }
                         Toast.makeText(this@StreamActivity, "Стрим запущен!", Toast.LENGTH_SHORT).show()
                     }
-                    -1 -> Toast.makeText(this@StreamActivity, "Нет интернета", Toast.LENGTH_LONG).show()
+                    -1 -> Toast.makeText(this@StreamActivity, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
                     -2 -> Toast.makeText(this@StreamActivity, "Стрим уже запущен", Toast.LENGTH_SHORT).show()
                     -3 -> Toast.makeText(this@StreamActivity, "Ошибка Яндекс.Диска", Toast.LENGTH_LONG).show()
                 }

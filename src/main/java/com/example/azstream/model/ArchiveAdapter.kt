@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.azstream.R
 
 class ArchiveAdapter(
-    private val items: List<ArchiveItem>,
+    private var items: List<ArchiveItem>,
     private val onTimeClick: (ArchiveItem) -> Unit
 ): RecyclerView.Adapter<ArchiveAdapter.ArchiveViewHolder>() {
 
@@ -23,6 +23,10 @@ class ArchiveAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+    fun updateItems(newItems: List<ArchiveItem>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
 
     class ArchiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon: TextView = itemView.findViewById(R.id.icon)

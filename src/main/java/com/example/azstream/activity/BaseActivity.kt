@@ -52,7 +52,9 @@ abstract class BaseActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                 }
                 R.id.nav_settings -> {
-                    // TODO: настройки
+                    if (this !is SettingsActivity) {
+                        startActivity(Intent(this, SettingsActivity::class.java))
+                    }
                 }
                 R.id.nav_about -> {
                     Toast.makeText(this, "О приложении\nВерсия 1.0", Toast.LENGTH_LONG).show()

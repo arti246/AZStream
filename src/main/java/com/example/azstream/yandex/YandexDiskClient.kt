@@ -1,20 +1,22 @@
 package com.example.azstream.yandex
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.example.azstream.Secrets
+import com.example.azstream.TokenManager
 import com.example.azstream.model.ArchiveItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.*
+import okhttp3.Request
 import org.json.JSONObject
 import java.net.URLEncoder
 
-class YandexDiskClient {
-    private val QAtoken: String = Secrets.YANDEX_DISK_TOKEN
+class YandexDiskClient(private val context: Context) {
     private val baseUrl = "https://cloud-api.yandex.net/v1/disk" // Базовый URL для API Яндекс.Диска
+    private val QAtoken: String
+        get() = TokenManager(context).getToken()
     private val authHeader = "OAuth $QAtoken" // Заголовок авторизации для всех запросов
 
     private val client = OkHttpClient()

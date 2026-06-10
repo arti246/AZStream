@@ -1,4 +1,4 @@
-package com.example.azstream.stream
+package com.example.azstream.managers
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -18,7 +18,7 @@ class StreamManager(
     private val lifecycleScope: LifecycleCoroutineScope
 ) {
     private var contextActivity = activity
-    private var yandexDiskClient = YandexDiskClient()
+    private var yandexDiskClient = YandexDiskClient(activity)
     private var networkChecker = NetworkChecker()
     private var pollingJob: Job? = null
     private var isPolling: Boolean = false

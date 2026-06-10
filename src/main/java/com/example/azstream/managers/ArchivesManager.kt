@@ -1,4 +1,4 @@
-package com.example.azstream.stream
+package com.example.azstream.managers
 
 import android.widget.Toast
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -7,14 +7,12 @@ import com.example.azstream.model.ArchiveAdapter
 import com.example.azstream.network.NetworkChecker
 import com.example.azstream.yandex.YandexDiskClient
 import kotlinx.coroutines.launch
-import okhttp3.Request
-import java.net.URLEncoder
 
 class ArchivesManager(
     private val activity: ArchiveActivity,
     private val lifecycleScope: LifecycleCoroutineScope,
 ) {
-    private var yandexDiskClient = YandexDiskClient()
+    private var yandexDiskClient = YandexDiskClient(activity)
     private var networkChecker = NetworkChecker()
 
     public fun loadArchiveContent(currentPath: String, adapter: ArchiveAdapter) {

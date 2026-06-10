@@ -6,12 +6,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.azstream.R
-import com.example.azstream.stream.StreamManager
+import com.example.azstream.managers.StreamManager
 import com.github.chrisbanes.photoview.PhotoView
 import kotlinx.coroutines.launch
 

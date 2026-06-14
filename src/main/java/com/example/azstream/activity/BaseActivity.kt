@@ -57,6 +57,11 @@ abstract class BaseActivity : AppCompatActivity() {
                         startActivity(Intent(this, SettingsActivity::class.java))
                     }
                 }
+                R.id.nav_instruction -> {
+                    if (this !is AboutAppActivity) {
+                        startActivity(Intent(this, AboutAppActivity::class.java))
+                    }
+                }
                 R.id.nav_about -> {
                     Toast.makeText(this, "О приложении\nВерсия 1.0", Toast.LENGTH_LONG).show()
                 }

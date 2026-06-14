@@ -14,6 +14,16 @@
     <string name="token_from_yandex">Токен от приложения Яндекс.Диск</string>
     <string name="streaming_from_yandex_disk">Стриминг с Яндекс.Диска</string>
     <string name="logo">Логотип</string>
+    <string name="token_section">🔑 Токен Яндекс.Диска</string>
+    <string name="token_hint">Введите OAuth токен</string>
+    <string name="refresh_interval_section">⏱️ Интервал обновления трансляции</string>
+    <string name="quality_section">🎬 Качество скриншотов</string>
+    <string name="quality_low">Низкое</string>
+    <string name="quality_medium">Среднее</string>
+    <string name="quality_high">Высокое</string>
+    <string name="cache_section">💾 Хранилище</string>
+    <string name="clear_cache">Очистить кэш</string>
+    <string name="save_changes_settings">Сохранить настройки</string>
 
     <!-- Сообщения -->
     <string name="about_app">О приложении\nВерсия 1.0</string>

@@ -4,4 +4,6 @@
     <color name="text_secondary">#666666</color>
     <color name="background">#FFFFFF</color>
     <color name="description_menu">#B3B3B3</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="divider">#E0E0E0</color>
 </resources>

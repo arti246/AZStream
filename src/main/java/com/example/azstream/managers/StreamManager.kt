@@ -15,10 +15,12 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class StreamManager(
     private val activity: StreamActivity,
-    private val lifecycleScope: LifecycleCoroutineScope
+    private val lifecycleScope: LifecycleCoroutineScope,
+    private val settings: SettingsData,
+    private val settingsManager: SettingsManager
 ) {
     private var contextActivity = activity
-    private var yandexDiskClient = YandexDiskClient(activity)
+    private var yandexDiskClient = YandexDiskClient(settingsManager)
     private var networkChecker = NetworkChecker()
     private var pollingJob: Job? = null
     private var isPolling: Boolean = false
@@ -33,6 +35,11 @@ class StreamManager(
         if (isPolling) return
         isPolling = true
 
+        val intervalMs = if (settings.refreshInterval > 0)
+            (1000 / settings.refreshInterval).toLong()
+        else
+            1000L
+
         pollingJob = lifecycleScope.launch(Dispatchers.IO) {
             while (isActive && isPolling) {
                 try {
@@ -42,10 +49,10 @@ class StreamManager(
                             onImageLoaded(bitmap)
                         }
                     }
-                    delay(2000.milliseconds)
+                    delay(intervalMs.milliseconds)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    delay(2000.milliseconds)
+                    delay(intervalMs.milliseconds)
                 }
             }
             isPolling = false

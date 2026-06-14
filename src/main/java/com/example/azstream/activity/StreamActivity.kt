@@ -9,6 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.azstream.R
+import com.example.azstream.managers.SettingsData
+import com.example.azstream.managers.SettingsManager
 import com.example.azstream.managers.StreamManager
 import com.github.chrisbanes.photoview.PhotoView
 import kotlinx.coroutines.launch
@@ -17,6 +19,9 @@ class StreamActivity : BaseActivity() {
     private lateinit var streamManager: StreamManager
     private lateinit var buttonStartStream: Button
     private lateinit  var buttonEndStream: Button
+
+    private var currentSettings: SettingsData = SettingsData()
+    private lateinit var settingsManager: SettingsManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +38,9 @@ class StreamActivity : BaseActivity() {
         val imageStream = findViewById<PhotoView>(R.id.ImageStream)
         val textPreview = findViewById<TextView>(R.id.textPreview)
 
-        streamManager = StreamManager(this, lifecycleScope)
+        settingsManager = SettingsManager(this, lifecycleScope)
+        currentSettings = settingsManager.loadSettings()
+        streamManager = StreamManager(this, lifecycleScope, currentSettings, settingsManager)
 
         buttonStartStream.setOnClickListener {
             lifecycleScope.launch {

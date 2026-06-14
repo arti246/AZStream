@@ -11,8 +11,9 @@ import kotlinx.coroutines.launch
 class ArchivesManager(
     private val activity: ArchiveActivity,
     private val lifecycleScope: LifecycleCoroutineScope,
+    private val settingsManager: SettingsManager
 ) {
-    private var yandexDiskClient = YandexDiskClient(activity)
+    private var yandexDiskClient = YandexDiskClient(settingsManager)
     private var networkChecker = NetworkChecker()
 
     public fun loadArchiveContent(currentPath: String, adapter: ArchiveAdapter) {

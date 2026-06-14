@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.azstream.R
 import com.example.azstream.managers.ArchivesManager
+import com.example.azstream.managers.SettingsManager
 import com.example.azstream.model.ArchiveAdapter
 import com.example.azstream.model.ArchiveItem
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class ArchiveActivity : BaseActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ArchiveAdapter
     private lateinit var archivesManager: ArchivesManager
+    private lateinit var settingsManager: SettingsManager
     private lateinit var buttonBack: ImageButton
     private val navigationStack = mutableListOf<String>()
     private var currentPath = "Приложения/AZStream/Archives"
@@ -31,7 +33,8 @@ class ArchiveActivity : BaseActivity() {
         setupDrawer()
         setupWindowInsets()
 
-        archivesManager = ArchivesManager(this, lifecycleScope)
+        settingsManager = SettingsManager(this, this.lifecycleScope)
+        archivesManager = ArchivesManager(this, lifecycleScope, settingsManager)
         recyclerView = findViewById(R.id.recyclerViewArchive)
         buttonBack = findViewById(R.id.buttonBack)
         recyclerView.layoutManager = LinearLayoutManager(this)

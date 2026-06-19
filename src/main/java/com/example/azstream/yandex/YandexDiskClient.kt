@@ -43,10 +43,13 @@ class YandexDiskClient(
         }
     }
 
-    suspend fun getLastScreenshot(): Bitmap? = withContext(Dispatchers.IO) {
+    suspend fun getLastScreenshot(stationName: String): Bitmap? = withContext(Dispatchers.IO) {
         try {
+            val path = "Приложения/AZStream/$stationName/Stream/last.jpg"
+            val encodedPath = URLEncoder.encode(path, "UTF-8").replace("+", "%20")
+
             val downloadUrlRequest = Request.Builder()
-                .url("https://cloud-api.yandex.net/v1/disk/resources/download?path=Приложения/AZStream/Stream/last.jpg")
+                .url("https://cloud-api.yandex.net/v1/disk/resources/download?path=$encodedPath")
                 .addHeader("Authorization", authHeader)
                 .build()
 
@@ -281,6 +284,38 @@ class YandexDiskClient(
         } catch (e: Exception) {
             e.printStackTrace()
             return@withContext false
+        }
+    }
+
+    suspend fun getStationsList(basePath: String): List<String> = withContext(Dispatchers.IO) {
+        try {
+            val encodedPath = URLEncoder.encode(basePath, "UTF-8").replace("+", "%20")
+            val request = Request.Builder()
+                .url("https://cloud-api.yandex.net/v1/disk/resources?path=$encodedPath&limit=100&fields=_embedded.items.name,_embedded.items.type")
+                .addHeader("Authorization", authHeader)
+                .build()
+
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                Log.e("YandexDisk", "Ошибка получения списка станций: ${response.code}")
+                return@withContext emptyList()
+            }
+
+            val json = response.body?.string() ?: return@withContext emptyList()
+            val jsonObject = JSONObject(json)
+            val itemsArray = jsonObject.getJSONObject("_embedded").getJSONArray("items")
+
+            val stations = mutableListOf<String>()
+            for (i in 0 until itemsArray.length()) {
+                val item = itemsArray.getJSONObject(i)
+                if (item.getString("type") == "dir") {
+                    stations.add(item.getString("name"))
+                }
+            }
+            return@withContext stations.sorted()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext emptyList()
         }
     }
 }

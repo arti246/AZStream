@@ -24,6 +24,7 @@ class StreamManager(
     private var networkChecker = NetworkChecker()
     private var pollingJob: Job? = null
     private var isPolling: Boolean = false
+    private var currentStation: String = "Station_1"
 
     suspend fun checkPreconditions(): Int = withContext(Dispatchers.IO) {
         if (isPolling) return@withContext -2
@@ -31,9 +32,10 @@ class StreamManager(
         if (!yandexDiskClient.checkDiskConnection()) return@withContext -3
         return@withContext 1  // всё ок
     }
-    fun startPolling(onImageLoaded: (Bitmap) -> Unit) {
+    fun startPolling(stationName: String, onImageLoaded: (Bitmap) -> Unit) {
         if (isPolling) return
         isPolling = true
+        currentStation = stationName
 
         val intervalMs = if (settings.refreshInterval > 0)
             (1000 / settings.refreshInterval).toLong()
@@ -43,7 +45,7 @@ class StreamManager(
         pollingJob = lifecycleScope.launch(Dispatchers.IO) {
             while (isActive && isPolling) {
                 try {
-                    val bitmap = yandexDiskClient.getLastScreenshot()
+                    val bitmap = yandexDiskClient.getLastScreenshot(currentStation)
                     if (bitmap != null) {
                         withContext(Dispatchers.Main) {
                             onImageLoaded(bitmap)
@@ -66,4 +68,10 @@ class StreamManager(
     }
 
     fun getIsPolling(): Boolean { return isPolling}
+
+    fun updateStation(stationName: String) {
+        currentStation = stationName
+        // Если стрим запущен — можно перезапустить с новой станцией
+        // или просто сохранить для следующего запуска
+    }
 }

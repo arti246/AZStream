@@ -23,8 +23,10 @@ class ArchiveActivity : BaseActivity() {
     private lateinit var archivesManager: ArchivesManager
     private lateinit var settingsManager: SettingsManager
     private lateinit var buttonBack: ImageButton
+
     private val navigationStack = mutableListOf<String>()
-    private var currentPath = "Приложения/AZStream/Archives"
+    private var currentStation: String = "Station_1"
+    private var currentPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,13 @@ class ArchiveActivity : BaseActivity() {
         setupWindowInsets()
 
         settingsManager = SettingsManager(this, this.lifecycleScope)
+
+        // ✅ Загружаем текущую станцию из настроек
+        currentStation = settingsManager.getSelectedStation()
+
+        // ✅ Строим путь к архиву выбранной станции
+        currentPath = "Приложения/AZStream/$currentStation/Archives"
+
         archivesManager = ArchivesManager(this, lifecycleScope, settingsManager)
         recyclerView = findViewById(R.id.recyclerViewArchive)
         buttonBack = findViewById(R.id.buttonBack)
@@ -42,7 +51,6 @@ class ArchiveActivity : BaseActivity() {
         // Кнопка "Назад"
         buttonBack.setOnClickListener {
             if (navigationStack.isNotEmpty()) {
-                // Возвращаемся на предыдущий путь
                 currentPath = navigationStack.removeAt(navigationStack.size - 1)
                 archivesManager.loadArchiveContent(currentPath, adapter)
                 updateNavigationButtons()
@@ -52,13 +60,11 @@ class ArchiveActivity : BaseActivity() {
         adapter = ArchiveAdapter(emptyList()) { item ->
             when (item) {
                 is ArchiveItem.Folder -> {
-                    // Переходим в папку
                     navigationStack.add(currentPath)
                     currentPath = item.path
                     archivesManager.loadArchiveContent(currentPath, adapter)
                     updateNavigationButtons()
                 }
-
                 is ArchiveItem.Video -> {
                     lifecycleScope.launch {
                         try {
@@ -88,7 +94,6 @@ class ArchiveActivity : BaseActivity() {
                     archivesManager.loadArchiveContent(currentPath, adapter)
                     buttonBack.visibility = if (navigationStack.isEmpty()) View.GONE else View.VISIBLE
                 } else {
-                    // Закрываем Activity
                     isEnabled = false
                     onBackPressedDispatcher.onBackPressed()
                 }
@@ -97,12 +102,21 @@ class ArchiveActivity : BaseActivity() {
     }
 
     private fun updateNavigationButtons() {
-        if (navigationStack.isEmpty()) {
-            // Мы в корне — показываем меню, скрываем стрелку назад
-            buttonBack.visibility = View.GONE
-        } else {
-            // Мы внутри папки — скрываем меню, показываем стрелку назад
-            buttonBack.visibility = View.VISIBLE
+        buttonBack.visibility = if (navigationStack.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Проверяем, не изменилась ли станция
+        val newStation = settingsManager.getSelectedStation()
+        if (newStation != currentStation) {
+            currentStation = newStation
+            // Обновляем путь и перезагружаем содержимое
+            currentPath = "Приложения/AZStream/$currentStation/Archives"
+            navigationStack.clear()  // Очищаем историю навигации
+            archivesManager.loadArchiveContent(currentPath, adapter)
+            updateNavigationButtons()
+            Toast.makeText(this, "Станция обновлена: $currentStation", Toast.LENGTH_SHORT).show()
         }
     }
 }

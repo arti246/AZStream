@@ -1,18 +1,10 @@
 package com.example.azstream.managers
 
 import android.content.Context
-import androidx.lifecycle.LifecycleCoroutineScope
-import com.example.azstream.network.NetworkChecker
-import com.example.azstream.yandex.YandexDiskClient
 import org.json.JSONObject
 import java.io.File
 
-class SettingsManager (
-    private val context: Context,
-    private val lifecycleScope: LifecycleCoroutineScope,
-) {
-    private val yandexDiskClient = YandexDiskClient(this)
-    private val networkChecker = NetworkChecker()
+class SettingsManager (private val context: Context) {
     private val settingsFile: File
         get() = File(context.filesDir, "settings.json")
 

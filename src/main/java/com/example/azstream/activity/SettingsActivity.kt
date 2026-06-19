@@ -7,7 +7,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.lifecycleScope
 import com.example.azstream.R
 import com.example.azstream.managers.SettingsData
 import com.example.azstream.managers.SettingsManager
@@ -32,7 +31,7 @@ class SettingsActivity : BaseActivity() {
 
         initializationObject()
 
-        settingsManager = SettingsManager(this, this.lifecycleScope)
+        settingsManager = SettingsManager(this)
 
         // Загружаем сохранённые настройки
         currentSettings = settingsManager.loadSettings()

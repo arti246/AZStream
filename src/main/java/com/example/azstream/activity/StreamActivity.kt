@@ -52,7 +52,7 @@ class StreamActivity : BaseActivity() {
         imageStream = findViewById(R.id.ImageStream)
         textPreview = findViewById(R.id.textPreview)
 
-        settingsManager = SettingsManager(this, lifecycleScope)
+        settingsManager = SettingsManager(this)
         currentSettings = settingsManager.loadSettings()
 
         // ← Инициализируем клиент

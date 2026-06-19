@@ -35,7 +35,7 @@ class ArchiveActivity : BaseActivity() {
         setupDrawer()
         setupWindowInsets()
 
-        settingsManager = SettingsManager(this, this.lifecycleScope)
+        settingsManager = SettingsManager(this)
 
         // ✅ Загружаем текущую станцию из настроек
         currentStation = settingsManager.getSelectedStation()

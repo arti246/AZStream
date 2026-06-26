@@ -61,6 +61,12 @@ class StreamActivity : BaseActivity() {
 
         streamManager = StreamManager(this, lifecycleScope, currentSettings, settingsManager)
 
+        streamManager.onWarning = { message ->
+            runOnUiThread {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         buttonStartStream.setOnClickListener {
             lifecycleScope.launch {
                 val check = streamManager.checkPreconditions()
@@ -86,11 +92,23 @@ class StreamActivity : BaseActivity() {
             Toast.makeText(this, "Стрим остановлен", Toast.LENGTH_SHORT).show()
         }
 
-        // ← Загружаем список станций
-        loadStationsList()
+        val state = streamManager.checkStartState()
+        when (state) {
+            -1 -> {
+                Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
+                buttonStartStream.isEnabled = false
+            }
+            -2 -> {
+                Toast.makeText(this, "Не указан токен Яндекс.Диска. Перейдите в настройки", Toast.LENGTH_LONG).show()
+                buttonStartStream.isEnabled = false
+            }
+            0 -> {
+                buttonStartStream.isEnabled = true
+                loadStationsList()
+            }
+        }
     }
 
-    // ← Добавить метод загрузки станций
     private fun loadStationsList() {
         lifecycleScope.launch {
             try {
@@ -148,6 +166,15 @@ class StreamActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         streamManager.stopPolling()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Если стрим запущен — останавливаем
+        if (streamManager.getIsPolling()) {
+            streamManager.stopPolling()
+            closeStream()
+        }
     }
 
     fun closeStream() {

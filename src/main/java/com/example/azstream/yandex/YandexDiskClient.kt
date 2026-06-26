@@ -9,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.File
@@ -199,46 +198,6 @@ class YandexDiskClient(
         }
     }
 
-    // Загрузка файла на Яндекс.Диск
-    suspend fun uploadFileToDisk(localFile: File, remotePath: String): Boolean = withContext(Dispatchers.IO) {
-        try {
-            // 1. Получаем URL для загрузки
-            val encodedPath = URLEncoder.encode(remotePath, "UTF-8")
-                .replace("+", "%20")
-
-            val getUploadUrlRequest = Request.Builder()
-                .url("https://cloud-api.yandex.net/v1/disk/resources/upload?path=$encodedPath&overwrite=true")
-                .addHeader("Authorization", "OAuth $QAtoken")
-                .build()
-
-            val uploadUrlResponse = client.newCall(getUploadUrlRequest).execute()
-
-            if (!uploadUrlResponse.isSuccessful) {
-                Log.e("YandexDisk", "Ошибка получения URL для загрузки: ${uploadUrlResponse.code}")
-                return@withContext false
-            }
-
-            val json = uploadUrlResponse.body?.string() ?: return@withContext false
-            val jsonObject = JSONObject(json)
-            val uploadUrl = jsonObject.getString("href")
-
-            // 2. Загружаем файл
-            val fileBody = localFile.readBytes()
-            val uploadRequest = Request.Builder()
-                .url(uploadUrl)
-                .put(RequestBody.create(null, fileBody))
-                .build()
-
-            val uploadResponse = client.newCall(uploadRequest).execute()
-
-            return@withContext uploadResponse.isSuccessful
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext false
-        }
-    }
-
     // Скачивание файла с Яндекс.Диска
     suspend fun downloadFileFromDisk(remotePath: String, localFile: File): Boolean = withContext(Dispatchers.IO) {
         try {
@@ -316,6 +275,55 @@ class YandexDiskClient(
         } catch (e: Exception) {
             e.printStackTrace()
             return@withContext emptyList()
+        }
+    }
+
+    suspend fun getLastScreenshotWithMeta(stationName: String): Pair<Bitmap?, String?> = withContext(Dispatchers.IO) {
+        try {
+            val path = "Приложения/AZStream/$stationName/Stream/last.jpg"
+            val encodedPath = URLEncoder.encode(path, "UTF-8").replace("+", "%20")
+
+            // 1. Получаем метаинформацию о файле (время модификации)
+            val metaRequest = Request.Builder()
+                .url("https://cloud-api.yandex.net/v1/disk/resources?path=$encodedPath&fields=modified,_embedded.items.modified")
+                .addHeader("Authorization", authHeader)
+                .build()
+
+            val metaResponse = client.newCall(metaRequest).execute()
+            if (!metaResponse.isSuccessful) {
+                Log.e("YandexDisk", "Ошибка получения метаданных: ${metaResponse.code}")
+                return@withContext Pair(null, null)
+            }
+
+            val metaJson = metaResponse.body?.string() ?: return@withContext Pair(null, null)
+            val metaObject = JSONObject(metaJson)
+
+            // Извлекаем время модификации
+            val modifiedTime = metaObject.optString("modified", null)
+
+            // 2. Получаем прямую ссылку на скачивание
+            val downloadRequest = Request.Builder()
+                .url("https://cloud-api.yandex.net/v1/disk/resources/download?path=$encodedPath")
+                .addHeader("Authorization", authHeader)
+                .build()
+
+            val downloadResponse = client.newCall(downloadRequest).execute()
+            if (!downloadResponse.isSuccessful) {
+                Log.e("YandexDisk", "Ошибка получения ссылки: ${downloadResponse.code}")
+                return@withContext Pair(null, modifiedTime)
+            }
+
+            val downloadJson = downloadResponse.body?.string() ?: return@withContext Pair(null, modifiedTime)
+            val downloadObject = JSONObject(downloadJson)
+            val directUrl = downloadObject.getString("href")
+
+            // 3. Скачиваем файл
+            val bitmap = downloadScreenshot(directUrl)
+            return@withContext Pair(bitmap, modifiedTime)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext Pair(null, null)
         }
     }
 }
